@@ -2,6 +2,8 @@
 
 /**
  * print_sign - prints sign of number
+ * @n: input number
+ * Return: 1 if +, 0 if zero, -1 if negative
  */
 int print_sign(int n)
 {
