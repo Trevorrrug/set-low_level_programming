@@ -1,12 +1,16 @@
 #include <stdio.h>
 
+/**
+ * main - prints digits
+ * Return: 0
+ */
 int main(void)
 {
-int i;
+    char c;
 
-for (i = 0; i < 10; i++)
-printf("%d", i);
-printf("\n");
+    for (c = '0'; c <= '9'; c++)
+        putchar(c);
+    putchar('\n');
 
-return (0);
+    return (0);
 }

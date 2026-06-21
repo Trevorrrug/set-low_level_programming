@@ -1,19 +1,23 @@
 #include <stdio.h>
 
+/**
+ * main - prints combinations
+ * Return: 0
+ */
 int main(void)
 {
-int i;
+    int i;
 
-for (i = 0; i < 10; i++)
-{
-putchar(i + '0');
-if (i != 9)
-{
-putchar(',');
-putchar(' ');
-}
-}
-putchar('\n');
+    for (i = 0; i <= 9; i++)
+    {
+        putchar(i + '0');
+        if (i != 9)
+        {
+            putchar(',');
+            putchar(' ');
+        }
+    }
+    putchar('\n');
 
-return (0);
+    return (0);
 }
