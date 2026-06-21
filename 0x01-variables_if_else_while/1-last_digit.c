@@ -2,23 +2,29 @@
 #include <stdlib.h>
 #include <time.h>
 
+/**
+ * main - Entry point
+ *
+ * Return: 0
+ */
 int main(void)
 {
-0-positive_or_negative.c int n, last;
+    int n;
+    int last;
 
-0-positive_or_negative.c srand(time(0));
-0-positive_or_negative.c n = rand() - RAND_MAX / 2;
+    srand(time(0));
+    n = rand() - RAND_MAX / 2;
 
-0-positive_or_negative.c last = n % 10;
+    last = n % 10;
 
-0-positive_or_negative.c printf("Last digit of %d is %d ", n, last);
+    printf("Last digit of %d is %d ", n, last);
 
-0-positive_or_negative.c if (last > 5)
-0-positive_or_negative.c 0-positive_or_negative.c printf("and is greater than 5\n");
-0-positive_or_negative.c else if (last == 0)
-0-positive_or_negative.c 0-positive_or_negative.c printf("and is 0\n");
-0-positive_or_negative.c else
-0-positive_or_negative.c 0-positive_or_negative.c printf("and is less than 6 and not 0\n");
+    if (last > 5)
+        printf("and is greater than 5\n");
+    else if (last == 0)
+        printf("and is 0\n");
+    else
+        printf("and is less than 6 and not 0\n");
 
-0-positive_or_negative.c return (0);
+    return (0);
 }
