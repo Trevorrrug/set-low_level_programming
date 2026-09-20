@@ -11,5 +11,6 @@ main:
 	lea rdi, [rel message]
 	xor eax, eax
 	call printf
+	xor eax, eax
 	pop rbp
 	ret
