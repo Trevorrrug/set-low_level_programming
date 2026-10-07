@@ -2,18 +2,18 @@
 #include "lists.h"
 
 /**
- * print_unsigned - prints an unsigned integer in decimal
+ * print_number - prints a nonnegative integer in decimal
  * @number: number to print
  */
-static void print_unsigned(size_t number)
+static void print_number(size_t number)
 {
 	if (number >= 10)
-		print_unsigned(number / 10);
+		print_number(number / 10);
 	_putchar((char)('0' + number % 10));
 }
 
 /**
- * print_hex - prints an unsigned integer in hexadecimal
+ * print_hex - prints a value in hexadecimal
  * @number: number to print
  */
 static void print_hex(size_t number)
@@ -41,10 +41,10 @@ static void print_node(const listint_t *node)
 	if (node->n < 0)
 	{
 		_putchar('-');
-		print_unsigned((size_t)(-(long int)node->n));
+		print_number((size_t)(-(long int)node->n));
 	}
 	else
-		print_unsigned((size_t)node->n);
+		print_number((size_t)node->n);
 	_putchar('\n');
 }
 
