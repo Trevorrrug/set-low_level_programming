@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "lists.h"
 
 /**
@@ -8,12 +9,12 @@ static void print_number(long number)
 {
 	if (number < 0)
 	{
-		_putchar('-');
+		putchar('-');
 		number = -number;
 	}
 	if (number >= 10)
 		print_number(number / 10);
-	_putchar((char)('0' + number % 10));
+	putchar((char)('0' + number % 10));
 }
 
 /**
@@ -29,7 +30,7 @@ size_t print_listint(const listint_t *h)
 	while (h != NULL)
 	{
 		print_number((long)h->n);
-		_putchar('\n');
+		putchar('\n');
 		h = h->next;
 		count++;
 	}
