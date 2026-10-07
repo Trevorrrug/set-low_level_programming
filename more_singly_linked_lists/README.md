@@ -1,11 +1,8 @@
-# More singly linked lists — Part 2
+# More singly linked lists
 
-This directory contains the `listint_t` functions for tasks 0–6:
+This directory contains the `listint_t` functions for Parts 1 and 2, including
+list creation, traversal, indexed insertion and deletion, reversal, safe
+printing and freeing of cyclic lists, and loop detection.
 
-- Sum, insert, and delete nodes by index.
-- Reverse a list in place.
-- Print and free lists safely when they contain loops.
-- Find the entry node of a loop.
-
-The functions are declared in `lists.h` and are designed to compile with
-`gcc -Wall -Werror -Wextra -pedantic -std=gnu89`.
+The files are designed to compile with `gcc -Wall -Werror -Wextra -pedantic
+-std=gnu89`.
