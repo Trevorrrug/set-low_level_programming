@@ -5,7 +5,7 @@
  * print_unsigned - prints an unsigned integer in decimal
  * @number: number to print
  */
-static void print_unsigned(unsigned long number)
+static void print_unsigned(unsigned long int number)
 {
 	if (number >= 10)
 		print_unsigned(number / 10);
@@ -16,7 +16,7 @@ static void print_unsigned(unsigned long number)
  * print_hex - prints an unsigned integer in hexadecimal
  * @number: number to print
  */
-static void print_hex(unsigned long number)
+static void print_hex(unsigned long int number)
 {
 	char digit;
 
@@ -35,16 +35,16 @@ static void print_node(const listint_t *node)
 	_putchar('[');
 	_putchar('0');
 	_putchar('x');
-	print_hex((unsigned long)node);
+	print_hex((unsigned long int)node);
 	_putchar(']');
 	_putchar(' ');
 	if (node->n < 0)
 	{
 		_putchar('-');
-		print_unsigned((unsigned long)(-(long)node->n));
+		print_unsigned((unsigned long int)(-(long int)node->n));
 	}
 	else
-		print_unsigned((unsigned long)node->n);
+		print_unsigned((unsigned long int)node->n);
 	_putchar('\n');
 }
 
