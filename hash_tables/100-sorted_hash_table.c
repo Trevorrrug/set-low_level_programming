@@ -23,6 +23,87 @@ static char *shash_copy_string(const char *str)
 }
 
 /**
+ * shash_find_node - finds a key in a bucket
+ * @ht: sorted hash table
+ * @index: bucket index
+ * @key: key to find
+ *
+ * Return: matching node, or NULL if it is not present
+ */
+static shash_node_t *shash_find_node(shash_table_t *ht,
+				     unsigned long int index, const char *key)
+{
+	shash_node_t *node;
+
+	for (node = ht->array[index]; node != NULL; node = node->next)
+	{
+		if (strcmp(node->key, key) == 0)
+			return (node);
+	}
+	return (NULL);
+}
+
+/**
+ * shash_create_node - allocates and initializes a node
+ * @key: key to copy
+ * @value: value to copy
+ *
+ * Return: new node, or NULL on allocation failure
+ */
+static shash_node_t *shash_create_node(const char *key, const char *value)
+{
+	shash_node_t *node;
+
+	node = malloc(sizeof(*node));
+	if (node == NULL)
+		return (NULL);
+	node->key = shash_copy_string(key);
+	node->value = shash_copy_string(value);
+	if (node->key == NULL || node->value == NULL)
+	{
+		free(node->key);
+		free(node->value);
+		free(node);
+		return (NULL);
+	}
+	node->next = NULL;
+	node->sprev = NULL;
+	node->snext = NULL;
+	return (node);
+}
+
+/**
+ * shash_link_sorted - inserts a node into the sorted list
+ * @ht: sorted hash table
+ * @node: node to link
+ */
+static void shash_link_sorted(shash_table_t *ht, shash_node_t *node)
+{
+	shash_node_t *current;
+
+	current = ht->shead;
+	while (current != NULL && strcmp(current->key, node->key) < 0)
+		current = current->snext;
+	if (current == NULL)
+	{
+		node->sprev = ht->stail;
+		if (ht->stail != NULL)
+			ht->stail->snext = node;
+		else
+			ht->shead = node;
+		ht->stail = node;
+		return;
+	}
+	node->snext = current;
+	node->sprev = current->sprev;
+	if (current->sprev != NULL)
+		current->sprev->snext = node;
+	else
+		ht->shead = node;
+	current->sprev = node;
+}
+
+/**
  * shash_table_create - creates a sorted hash table
  * @size: size of the array
  *
@@ -63,65 +144,29 @@ shash_table_t *shash_table_create(unsigned long int size)
 int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 {
 	unsigned long int index;
-	shash_node_t *node, *new_node, *sorted;
+	shash_node_t *node;
 	char *new_value;
 
 	if (ht == NULL || key == NULL || key[0] == '\0' || value == NULL ||
 	    ht->size == 0)
 		return (0);
 	index = key_index((const unsigned char *)key, ht->size);
-	node = ht->array[index];
-	while (node != NULL)
+	node = shash_find_node(ht, index, key);
+	if (node != NULL)
 	{
-		if (strcmp(node->key, key) == 0)
-		{
-			new_value = shash_copy_string(value);
-			if (new_value == NULL)
-				return (0);
-			free(node->value);
-			node->value = new_value;
-			return (1);
-		}
-		node = node->next;
+		new_value = shash_copy_string(value);
+		if (new_value == NULL)
+			return (0);
+		free(node->value);
+		node->value = new_value;
+		return (1);
 	}
-	new_node = malloc(sizeof(*new_node));
-	if (new_node == NULL)
+	node = shash_create_node(key, value);
+	if (node == NULL)
 		return (0);
-	new_node->key = shash_copy_string(key);
-	new_node->value = shash_copy_string(value);
-	if (new_node->key == NULL || new_node->value == NULL)
-	{
-		free(new_node->key);
-		free(new_node->value);
-		free(new_node);
-		return (0);
-	}
-	new_node->next = ht->array[index];
-	ht->array[index] = new_node;
-	new_node->sprev = NULL;
-	new_node->snext = NULL;
-	sorted = ht->shead;
-	while (sorted != NULL && strcmp(sorted->key, key) < 0)
-		sorted = sorted->snext;
-	if (sorted == NULL)
-	{
-		new_node->sprev = ht->stail;
-		if (ht->stail != NULL)
-			ht->stail->snext = new_node;
-		else
-			ht->shead = new_node;
-		ht->stail = new_node;
-	}
-	else
-	{
-		new_node->snext = sorted;
-		new_node->sprev = sorted->sprev;
-		if (sorted->sprev != NULL)
-			sorted->sprev->snext = new_node;
-		else
-			ht->shead = new_node;
-		sorted->sprev = new_node;
-	}
+	node->next = ht->array[index];
+	ht->array[index] = node;
+	shash_link_sorted(ht, node);
 	return (1);
 }
 
